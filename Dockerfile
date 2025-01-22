@@ -1,5 +1,9 @@
 FROM centos:7
 
+RUN sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/CentOS-*.repo
+RUN sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/CentOS-*.repo
+RUN sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/CentOS-*.repo
+
 RUN yum install -y lapack lapack-devel
 
 # Install necessary build tools
@@ -23,8 +27,8 @@ ENV LD_PRELOAD=${LD_PRELOAD}:/opt/intel/mkl/lib/intel64/libmkl_gnu_thread.so
 COPY . /opt/JFaiss
 WORKDIR /opt/JFaiss/faiss
 
-ENV CXXFLAGS="-mavx2 -mf16c"
-# Install faiss
+# Compile and install faiss
+ENV CXXFLAGS=${CXXFLAGS}" -mavx2 -mf16c -I/opt/JFaiss"
 RUN ./configure --prefix=/usr --without-cuda
 RUN make -j $(nproc)
 RUN make install
