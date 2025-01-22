@@ -22,7 +22,7 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.kdiduk</groupId>
+            <groupId>com.github.victor-paltz</groupId>
             <artifactId>global-load-library</artifactId>
             <version>1.2.0</version>
         </dependency>
